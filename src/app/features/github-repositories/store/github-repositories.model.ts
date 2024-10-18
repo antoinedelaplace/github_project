@@ -12,6 +12,11 @@ export interface Contributor {
 export interface Commit {
 	sha: string;
 	author: Contributor;
+	commit: {
+		author: {
+			date: string;
+		};
+	};
 }
 
 export interface Repository {
