@@ -24,7 +24,14 @@
 			} @else {
 				<ul>
 					<li *ngFor="let repo of repositories()">
-						{{ repo.full_name }}
+						<a
+							[routerLink]="[
+								'/github-repository-analytics/',
+								repo.owner.login,
+								repo.name
+							]">
+							{{ repo.full_name }}
+						</a>
 					</li>
 				</ul>
 			}

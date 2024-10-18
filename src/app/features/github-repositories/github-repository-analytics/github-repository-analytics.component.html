@@ -1,0 +1,10 @@
+<div *ngIf="isLoading()">Loading...</div>
+<div *ngIf="error()">Error: {{ error() }}</div>
+<div *ngIf="contributors()">
+	<h3>Contributors of {{ owner() }}/{{ repo() }} :</h3>
+	<ul>
+		<li *ngFor="let contributor of contributors()">
+			{{ contributor.login }}: {{ contributor.contributions }} commits
+		</li>
+	</ul>
+</div>

@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
 	GithubRepositoriesState,
+	githubContributorsAdapter,
 	githubRepositoriesAdapter
 } from './github-repositories.reducer';
 
@@ -13,8 +14,16 @@ export const selectGithubRepositoriesEntityState = createSelector(
 	state => state.repositories
 );
 
+export const selectGithubContributorsEntityState = createSelector(
+	selectGithubRepositoriesState,
+	state => state.contributors
+);
+
 export const selectAllRepositories = githubRepositoriesAdapter.getSelectors(
 	selectGithubRepositoriesEntityState
+).selectAll;
+export const selectAllContributors = githubContributorsAdapter.getSelectors(
+	selectGithubContributorsEntityState
 ).selectAll;
 
 export const selectIsLoading = createSelector(

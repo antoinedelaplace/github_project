@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Repository } from './github-repositories.model';
+import { Contributor, Repository } from './github-repositories.model';
 
 export const searchRepositories = createAction(
 	'[Github Repos] searchRepositories',
@@ -12,5 +12,20 @@ export const searchRepositoriesSuccess = createAction(
 );
 export const searchRepositoriesError = createAction(
 	'[Github Repos] searchRepositories Error',
+	props<{ error: string }>()
+);
+
+export const loadContributorsOfSelectedRepository = createAction(
+	'[Github Repos] loadContributorsOfSelectedRepository',
+	props<{ owner: string; repo: string }>()
+);
+
+export const loadContributorsOfSelectedRepositorySuccess = createAction(
+	'[Github Repos] loadContributorsOfSelectedRepositorySuccess',
+	props<{ contributors: Contributor[] }>()
+);
+
+export const loadContributorsOfSelectedRepositoryError = createAction(
+	'[Github Repos] loadContributorsOfSelectedRepositoryError',
 	props<{ error: string }>()
 );

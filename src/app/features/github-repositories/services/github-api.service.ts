@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Repository } from '../store/github-repositories.model';
+import { Contributor, Repository } from '../store/github-repositories.model';
 
 interface SearchRepositoriesResponse {
 	items: Repository[];
@@ -24,6 +24,15 @@ export class GithubApiService {
 
 		return this.http.get<SearchRepositoriesResponse>(
 			`${this.baseUrl}/search/repositories?q=${searchQuery}`
+		);
+	}
+
+	public getContributors(
+		owner: string,
+		repo: string
+	): Observable<Contributor[]> {
+		return this.http.get<Contributor[]>(
+			`${this.baseUrl}/repos/${owner}/${repo}/contributors`
 		);
 	}
 }

@@ -6,6 +6,7 @@ import {
 	FormGroup,
 	ReactiveFormsModule
 } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 
@@ -18,7 +19,7 @@ import { Repository } from '../store/github-repositories.model';
 @Component({
 	selector: 'app-search-github-repositories',
 	standalone: true,
-	imports: [CommonModule, ReactiveFormsModule],
+	imports: [CommonModule, ReactiveFormsModule, RouterModule],
 	templateUrl: './search-github-repositories.component.html'
 })
 export class SearchGithubRepositoriesComponent implements OnDestroy {

@@ -6,6 +6,9 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 
 import { GithubApiService } from '../services/github-api.service';
 import {
+	loadContributorsOfSelectedRepository,
+	loadContributorsOfSelectedRepositoryError,
+	loadContributorsOfSelectedRepositorySuccess,
 	searchRepositories,
 	searchRepositoriesError,
 	searchRepositoriesSuccess
@@ -26,6 +29,28 @@ export class GithubRepositoriesEffect {
 					map(response => searchRepositoriesSuccess({ repos: response.items })),
 					catchError(error =>
 						of(searchRepositoriesError({ error: error.message }))
+					)
+				)
+			)
+		)
+	);
+
+	loadCommittersOfSelectedRepository$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(loadContributorsOfSelectedRepository),
+			mergeMap(action =>
+				this.githubApiService.getContributors(action.owner, action.repo).pipe(
+					map(contributors =>
+						loadContributorsOfSelectedRepositorySuccess({
+							contributors
+						})
+					),
+					catchError(error =>
+						of(
+							loadContributorsOfSelectedRepositoryError({
+								error: error.message
+							})
+						)
 					)
 				)
 			)
