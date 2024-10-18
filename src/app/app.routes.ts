@@ -28,6 +28,13 @@ export const routes: Routes = [
 			).then(m => m.GoogleAuthRedirectComponent)
 	},
 	{
+		path: 'github-repositories',
+		loadComponent: () =>
+			import(
+				'./features/github-repositories/search-github-repositories/search-github-repositories.component'
+			).then(m => m.SearchGithubRepositoriesComponent)
+	},
+	{
 		path: '**',
 		loadComponent: () =>
 			import('./core/routing/page-not-found/page-not-found.component').then(
