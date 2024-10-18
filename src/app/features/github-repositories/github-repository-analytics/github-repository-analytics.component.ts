@@ -6,9 +6,17 @@ import { Store } from '@ngrx/store';
 
 import { Subscription, take } from 'rxjs';
 
-import { selectAllContributors, selectError, selectIsLoading } from '../store';
-import { loadContributorsOfSelectedRepository } from '../store/github-repositories.actions';
-import { Contributor } from '../store/github-repositories.model';
+import {
+	selectAllCommits,
+	selectAllContributors,
+	selectError,
+	selectIsLoading
+} from '../store';
+import {
+	loadCommitsOfSelectedRepository,
+	loadContributorsOfSelectedRepository
+} from '../store/github-repositories.actions';
+import { Commit, Contributor } from '../store/github-repositories.model';
 
 @Component({
 	selector: 'app-github-analytics',
@@ -23,19 +31,32 @@ export class GithubRepositoryAnalyticsComponent implements OnDestroy {
 	public owner = signal<string>('');
 	public repo = signal<string>('');
 
-	public subscriptions: Subscription[];
+	public contributorsOnLastHundredCommits: {
+		login: string;
+		contributions: number;
+	}[] = [];
+	private subscriptions: Subscription[];
 
 	public constructor(
 		private store: Store,
 		private route: ActivatedRoute
 	) {
 		this.route.paramMap.pipe(take(1)).subscribe(param => {
-			this.owner.set(param.get('owner')!);
-			this.repo.set(param.get('repo')!);
+			const owner = param.get('owner')!;
+			const repo = param.get('repo')!;
+
+			this.owner.set(owner);
+			this.repo.set(repo);
 			this.store.dispatch(
 				loadContributorsOfSelectedRepository({
-					owner: param.get('owner')!,
-					repo: param.get('repo')!
+					owner,
+					repo
+				})
+			);
+			this.store.dispatch(
+				loadCommitsOfSelectedRepository({
+					owner,
+					repo
 				})
 			);
 		});
@@ -44,6 +65,9 @@ export class GithubRepositoryAnalyticsComponent implements OnDestroy {
 			this.store
 				.select(selectAllContributors)
 				.subscribe(contributors => this.contributors.set(contributors)),
+			this.store
+				.select(selectAllCommits)
+				.subscribe(commits => this.computeContributorsImpacts(commits)),
 			this.store
 				.select(selectIsLoading)
 				.subscribe(isLoading => this.isLoading.set(isLoading)),
@@ -54,5 +78,21 @@ export class GithubRepositoryAnalyticsComponent implements OnDestroy {
 
 	public ngOnDestroy(): void {
 		this.subscriptions.forEach(sub => sub.unsubscribe());
+	}
+
+	private computeContributorsImpacts(commits: Commit[]): void {
+		const committerMap = new Map<string, number>();
+		commits.forEach(commit => {
+			const login = commit.author?.login;
+			if (login) {
+				committerMap.set(login, (committerMap.get(login) || 0) + 1);
+			}
+		});
+		this.contributorsOnLastHundredCommits = Array.from(
+			committerMap.entries()
+		).map(([login, contributions]) => ({
+			login,
+			contributions
+		}));
 	}
 }

@@ -23,16 +23,18 @@
 				<div>{{ error() }}</div>
 			} @else {
 				<ul>
-					<li *ngFor="let repo of repositories()">
-						<a
-							[routerLink]="[
-								'/github-repository-analytics/',
-								repo.owner.login,
-								repo.name
-							]">
-							{{ repo.full_name }}
-						</a>
-					</li>
+					@for (repo of repositories(); track repo.id) {
+						<li>
+							<a
+								[routerLink]="[
+									'/github-repository-analytics/',
+									repo.owner.login,
+									repo.name
+								]">
+								{{ repo.full_name }}
+							</a>
+						</li>
+					}
 				</ul>
 			}
 		</div>

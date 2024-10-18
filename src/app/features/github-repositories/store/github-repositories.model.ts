@@ -9,6 +9,11 @@ export interface Contributor {
 	contributions: number;
 }
 
+export interface Commit {
+	sha: string;
+	author: Contributor;
+}
+
 export interface Repository {
 	full_name: string;
 	name: string;

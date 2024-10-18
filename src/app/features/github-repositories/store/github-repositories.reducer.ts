@@ -2,6 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import {
+	loadCommitsOfSelectedRepositorySuccess,
 	loadContributorsOfSelectedRepository,
 	loadContributorsOfSelectedRepositoryError,
 	loadContributorsOfSelectedRepositorySuccess,
@@ -9,14 +10,18 @@ import {
 	searchRepositoriesError,
 	searchRepositoriesSuccess
 } from './github-repositories.actions';
-import { Contributor, Repository } from './github-repositories.model';
+import { Commit, Contributor, Repository } from './github-repositories.model';
 
 export const githubRepositoriesAdapter = createEntityAdapter<Repository>();
 export const githubContributorsAdapter = createEntityAdapter<Contributor>();
+export const githubCommitsAdapter = createEntityAdapter<Commit>({
+	selectId: commit => commit.sha
+});
 
 export interface GithubRepositoriesState {
 	repositories: EntityState<Repository>;
 	contributors: EntityState<Contributor>;
+	commits: EntityState<Commit>;
 	isLoading: boolean;
 	error: string;
 }
@@ -25,7 +30,8 @@ export const initialState = {
 	repositories: githubRepositoriesAdapter.getInitialState(),
 	isLoading: false,
 	error: '',
-	contributors: githubContributorsAdapter.getInitialState()
+	contributors: githubContributorsAdapter.getInitialState(),
+	commits: githubCommitsAdapter.getInitialState()
 };
 
 export const githubRepositoriesReducer = createReducer(
@@ -66,5 +72,9 @@ export const githubRepositoriesReducer = createReducer(
 		...state,
 		isLoading: false,
 		error
+	})),
+	on(loadCommitsOfSelectedRepositorySuccess, (state, { commits }) => ({
+		...state,
+		commits: githubCommitsAdapter.setAll(commits, state.commits)
 	}))
 );

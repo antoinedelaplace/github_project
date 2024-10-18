@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Contributor, Repository } from '../store/github-repositories.model';
+import {
+	Commit,
+	Contributor,
+	Repository
+} from '../store/github-repositories.model';
 
 interface SearchRepositoriesResponse {
 	items: Repository[];
@@ -33,6 +37,12 @@ export class GithubApiService {
 	): Observable<Contributor[]> {
 		return this.http.get<Contributor[]>(
 			`${this.baseUrl}/repos/${owner}/${repo}/contributors`
+		);
+	}
+
+	public getCommits(owner: string, repo: string): Observable<Commit[]> {
+		return this.http.get<Commit[]>(
+			`${this.baseUrl}/repos/${owner}/${repo}/commits?per_page=100`
 		);
 	}
 }
