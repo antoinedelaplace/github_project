@@ -1,0 +1,1 @@
+import{A as s,B as i,C as c,n as e,o as r}from"./chunk-RLCKPOAB.js";var o=r("github-repositories"),l=e(o,t=>t.repositories),p=e(o,t=>t.contributors),n=e(o,t=>t.commits),b=s.getSelectors(l).selectAll,m=i.getSelectors(p).selectAll,g=c.getSelectors(n).selectAll,x=e(o,t=>t.isLoading),A=e(o,t=>t.error);export{b as a,m as b,g as c,x as d,A as e};
