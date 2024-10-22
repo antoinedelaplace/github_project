@@ -1,35 +1,37 @@
-<div class="p-4">
-	@if (isLoading()) {
-		<div>Loading...</div>
-	} @else if (error()) {
-		<div>{{ error() }}</div>
-	} @else {
-		<h2 class="text-base font-semibold leading-7 text-gray-900">
-			Analytics of {{ owner() }}/{{ repo() }} :
-		</h2>
-		<p class="mt-1 text-sm leading-6 text-gray-600">
-			Total contributions in the repository :
-		</p>
-		<ul>
-			@for (contributor of contributors(); track contributor.login) {
-				<li>
-					{{ contributor.login }}: {{ contributor.contributions }} commits
-				</li>
-			}
-		</ul>
-		<p class="mt-1 text-sm leading-6 text-gray-600">
-			Contributions in the last 100 commits of the repository :
-		</p>
-		<ul>
-			@for (
-				contributor of contributorsOnLastHundredCommits;
-				track contributor.login
-			) {
-				<li>
-					{{ contributor.login }}: {{ contributor.contributions }}/100 commits
-				</li>
-			}
-		</ul>
-	}
+<div class="columns-2 p-4">
+	<div>
+		@if (isLoading()) {
+			<div>Loading...</div>
+		} @else if (error()) {
+			<div>{{ error() }}</div>
+		} @else {
+			<h2 class="text-base font-semibold leading-7 text-gray-900">
+				Analytics of {{ owner() }}/{{ repo() }} :
+			</h2>
+			<p class="mt-1 text-sm leading-6 text-gray-600">
+				Total contributions in the repository :
+			</p>
+			<ul>
+				@for (contributor of contributors(); track contributor.login) {
+					<li>
+						{{ contributor.login }}: {{ contributor.contributions }} commits
+					</li>
+				}
+			</ul>
+			<p class="mt-1 text-sm leading-6 text-gray-600">
+				Contributions in the last 100 commits of the repository :
+			</p>
+			<ul>
+				@for (
+					contributor of contributorsOnLastHundredCommits;
+					track contributor.login
+				) {
+					<li>
+						{{ contributor.login }}: {{ contributor.contributions }}/100 commits
+					</li>
+				}
+			</ul>
+		}
+	</div>
+	<div #timeline></div>
 </div>
-<div #timeline></div>
