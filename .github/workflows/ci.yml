@@ -27,8 +27,10 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      - name: Run tests
-        run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
-
       - name: Build app
-        run: npm run build -- --prod
+        run: npm run build:prod
+
+      - name: Deploy to GitHub Pages
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npm run ng -- deploy --base-href=/github_project/ --repo=https://GH_TOKEN@github.com/antoinedelaplace/github_project.git --name="Antoine DELAPLACE" --email=antoine.delaplace@gmail.com

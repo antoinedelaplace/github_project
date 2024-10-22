@@ -1,13 +1,15 @@
 {
-	"name": "angular-template",
+	"name": "github_project",
 	"version": "0.0.0",
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
 		"build": "ng build",
+		"build:prod": "ng build --configuration production --base-href=/github_project/",
 		"watch": "ng build --watch --configuration development",
 		"test": "ng test",
-		"lint": "ng lint"
+		"lint": "ng lint",
+		"deploy": "ng deploy"
 	},
 	"private": true,
 	"dependencies": {
@@ -24,6 +26,7 @@
 		"@ngrx/store": "18.1.0",
 		"@ngrx/store-devtools": "18.1.0",
 		"@tailwindcss/forms": "0.5.9",
+		"angular-cli-ghpages": "2.0.1",
 		"d3": "7.9.0",
 		"rxjs": "7.8.1",
 		"tslib": "2.7.0",
